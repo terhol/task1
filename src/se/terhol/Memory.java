@@ -35,7 +35,7 @@ public class Memory {
      *
      * @return TRUE if memory was successfully allocated, otherwise FALSE
      */
-    private boolean allocate(Task task) {
+    public boolean allocate(Task task) {
         boolean hasBeenAllocated = false;
 
         if (getFreeVolume() >= task.getRequiredMemory()) {
