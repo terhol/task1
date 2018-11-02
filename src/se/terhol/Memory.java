@@ -17,14 +17,14 @@ public class Memory {
         this.capacity = capacity;
     }
 
-    private int getAllocatedVolume() {
+    public int getAllocatedVolume() {
         return this.allocatedCapacity;
     }
 
     /**
      * @return capacity without allocated capacity in MB
      */
-    private int getFreeVolume() {
+    public int getFreeVolume() {
         return this.capacity - this.allocatedCapacity;
     }
 
@@ -38,12 +38,32 @@ public class Memory {
     public boolean allocate(Task task) {
         boolean hasBeenAllocated = false;
 
-        if (getFreeVolume() >= task.getRequiredMemory()) {
+        if (task != null && getFreeVolume() >= task.getRequiredMemory() && !task.isActive()) {
             this.allocatedCapacity = this.allocatedCapacity + task.getRequiredMemory();
+            task.activate();
             hasBeenAllocated = true;
         }
 
         return hasBeenAllocated;
+    }
+
+    /**
+     * Deactivates task and releases memory.
+     *
+     * @param task task which is required to be deactivated
+     *
+     * @return TRUE if the memory was successfully released, otherwise FALSE
+     */
+    public boolean release(Task task) {
+        boolean hasBeenReleased = false;
+
+        if(task != null && task.isActive() && task.getRequiredMemory() <= getAllocatedVolume() ) {
+            this.allocatedCapacity = this.allocatedCapacity - task.getRequiredMemory();
+            task.deactivate();
+            hasBeenReleased = true;
+        }
+
+        return hasBeenReleased;
     }
 
     public String toString(){
