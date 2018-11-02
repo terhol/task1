@@ -16,6 +16,10 @@ public class Planner {
      * @return TRUE if the task has been successfully moved, otherwise FALSE
      */
     public boolean move(Memory source, Memory destination, Task task) {
+        if (source == null || destination == null || task == null) {
+            return false;
+        }
+
         boolean isMoved = false;
         boolean hasEnoughSpace = task.getRequiredMemory() <= destination.getFreeVolume();
         boolean canBeMoved = task.getRequiredMemory() <= source.getAllocatedVolume();
